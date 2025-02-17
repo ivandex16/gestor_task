@@ -26,11 +26,11 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Ejecutar base de datos
+## copiar el archivo .teplate.env
 
-```bash
+```
 
-$ docker compose up -d
+copiar el archivo ".template.env" y renobrarlo a ".env"
 
 ```
 
@@ -39,6 +39,18 @@ $ docker compose up -d
 ```bash
 $ npm install
 ```
+
+## Ejecutar base de datos
+
+```bash
+
+$ docker compose up -d
+
+```
+
+
+
+
 
 ## Compile and run the project
 
