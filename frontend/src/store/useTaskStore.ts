@@ -337,12 +337,12 @@ const useTaskStore = create<TaskStates>((set, get) => {
       return new Promise((resolve, reject) => {
         if (!socket) return reject("WebSocket no conectado");
         socket.once("filtered", (response) => {
-          console.log("filtered:", response);
+          
           set({
             tasks: response.task,
             loading: false,
             error: null,
-            msj: response.message,
+            msj: null,
           }); // Actualiza el estado con la tarea recibida
         });
 

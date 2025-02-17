@@ -84,7 +84,7 @@ const Home = () => {
     setDefaultTask(myTask);
   }, [myTask]);
 
-  console.log("defaulTask", defaulTask);
+  
 
   const handleDelete = async (params: GridRenderCellParams) => {
     const id = params.row._id;
