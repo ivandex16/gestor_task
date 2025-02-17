@@ -3,10 +3,11 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import useUserStore from "../../store/useUserStore";
-import { ChangeEvent, useCallback, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { debounce, delay } from "lodash";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -26,17 +27,31 @@ const Register = () => {
     fullname: "",
   });
 
+
+
+
   //notificaciones
   useEffect(() => {
     console.log("efect msj", msj);
     if (msj) {
       toast.success(msj, { className: "custom-toast" });
-      setFormData((prev) => ({
-        ...prev,
+      setFormData({
         email: "",
         password: "",
         fullname: "",
-      }));
+      });
+      setHelpertext({
+        email: "",
+        password: "",
+        fullname: "",
+      });
+      setErrorField({
+        email: false,
+        password: false,
+        fullname: false,
+      });
+    
+      
     }
     setMensaje(null);
 
@@ -65,6 +80,8 @@ const Register = () => {
     });
   };
 
+  
+
   const [helpertext, setHelpertext] = useState({
     email: "",
     password: "",
@@ -78,6 +95,7 @@ const Register = () => {
   });
 
   const validate = () => {
+    let isValid = false
     if (!formData.email) {
       setHelpertext((prev) => ({
         ...prev,
@@ -88,6 +106,7 @@ const Register = () => {
         ...prev,
         email: true,
       }));
+      isValid = false
     } else if (
       !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(formData.email)
     ) {
@@ -99,6 +118,7 @@ const Register = () => {
         ...prev,
         email: true,
       }));
+      isValid = false
     }
 
     if (!formData.password) {
@@ -110,6 +130,7 @@ const Register = () => {
         ...prev,
         password: true,
       }));
+      isValid = false
     } else if (formData.password.length < 6) {
       setHelpertext((prev) => ({
         ...prev,
@@ -119,6 +140,7 @@ const Register = () => {
         ...prev,
         password: true,
       }));
+      isValid = false
     }
 
     if (!formData.fullname) {
@@ -130,16 +152,22 @@ const Register = () => {
         ...prev,
         fullname: true,
       }));
+      isValid = false
     }
+
+    return isValid
   };
 
-  const handleSubmit = useCallback<any>(async () => {
+  const handleSubmit = async () => {
     validate();
     if (!errorField.email && !errorField.password && !errorField.fullname) {
-      await fetchRegister(formData.email, formData.password, formData.fullname);
-      //navigate("/auth/login");
+      fetchRegister(formData.email, formData.password, formData.fullname), 3000
+     setTimeout(() => {
+       navigate("/auth/login");
+      },2000)
+
     }
-  }, [formData]);
+  };
 
   console.log("el error", error);
   console.log("user", user);
